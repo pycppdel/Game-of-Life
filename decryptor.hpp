@@ -19,6 +19,7 @@ public:
   int get_height();
   int get_cellsize();
   int get_fps();
+  bool get_random();
 
 };
 
@@ -143,6 +144,28 @@ int Crypt::get_fps(){
   }
 
   return FPS;
+
+}
+
+bool Crypt::get_random(){
+
+  if (argv == NULL){
+
+    return false;
+  }
+  int back;
+  std::stringstream stream;
+  for(int i=0;i<argc;i++){
+
+    if (strncmp("--random", argv[i], strlen(argv[i])) == 0){
+
+    return true;
+    }
+
+
+  }
+
+  return false;
 
 }
 

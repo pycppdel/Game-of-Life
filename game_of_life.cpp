@@ -18,6 +18,9 @@ SDL_Window* window;
 SDL_Renderer* renderer;
 SDL_Event e;
 
+bool editor_mode = true;
+int m_x=0, m_y=0;
+
 void init();
 void draw();
 void end();
@@ -61,8 +64,9 @@ int main(int argc, char** argv){
   //now variables should be declared or initialized
   Field cop(get_cell_row_count(), get_cell_column_count(), cellsize, renderer);
   global_field = cop;
-  std::cout << global_field.width << " " << global_field.height << std::endl;
-  global_field.fill_randomly();
+  if(crypt.get_random()){
+    global_field.fill_randomly();
+  }
 
   Timer tim(static_cast<int>(1000/fps));
   tim.set_f(call_global_transform);
@@ -80,9 +84,33 @@ int main(int argc, char** argv){
       case SDL_QUIT:
                     quit = true;
                     break;
+      case SDL_MOUSEBUTTONDOWN:
+
+                  switch(e.button.button){
+                    case SDL_BUTTON_LEFT:
+
+                    if(editor_mode){
+                      SDL_GetMouseState(&m_y, &m_x);
+                      m_x = static_cast<int>(m_x / cellsize);
+                      m_y = static_cast<int>(m_y / cellsize);
+                      global_field.living[m_x][m_y] = !global_field.living[m_x][m_y];
+                    }
+                    break;
+
+
+                    case SDL_BUTTON_RIGHT:
+
+                            if(editor_mode){
+                              editor_mode = false;
+                            }
+
+                  }
+                  break;
 
     }
-    tim.tick();
+    if(!editor_mode){
+      tim.tick();
+    }
     draw();
 
   }
