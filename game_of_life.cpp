@@ -100,9 +100,7 @@ int main(int argc, char** argv){
 
                     case SDL_BUTTON_RIGHT:
 
-                            if(editor_mode){
-                              editor_mode = false;
-                            }
+                            editor_mode = !editor_mode;
 
                   }
                   break;
