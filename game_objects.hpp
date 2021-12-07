@@ -261,8 +261,8 @@ void Field::draw(){
 
 void Field::fill_randomly(){
 
-  for(int i=0;i<width;i++){
-  for(int z = 0; z < height; z++){
+  for(int i=0;i<this->width;i++){
+  for(int z = 0; z < this->height; z++){
     living[i][z] = ((rand()%2) == 1);
   }
 }

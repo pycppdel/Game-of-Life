@@ -28,9 +28,9 @@ int get_cell_column_count();
 void call_global_transform();
 
 //for width: -w [NUMBER]
-int width = STANDARD_WIDTH;
+volatile int width = STANDARD_WIDTH;
 //for height: -h [NUMBER]
-int height = STANDARD_HEIGHT;
+volatile int height = STANDARD_HEIGHT;
 //color: set color via -c [R]_[G]_[B]; example: -c 255_0_0
 SDL_Color background_color = {128, 128, 128};
 //cellsize for cells
@@ -48,7 +48,6 @@ SDL_Color white = {0xFF, 0xFF, 0xFF};
 int main(int argc, char** argv){
 
   //init process
-  init();
   srand(time(NULL));
 
 
@@ -57,9 +56,12 @@ int main(int argc, char** argv){
   ::height = crypt.get_height();
   ::cellsize = crypt.get_cellsize();
   ::fps = crypt.get_fps();
+
+  init();
   //now variables should be declared or initialized
   Field cop(get_cell_row_count(), get_cell_column_count(), cellsize, renderer);
   global_field = cop;
+  std::cout << global_field.width << " " << global_field.height << std::endl;
   global_field.fill_randomly();
 
   Timer tim(static_cast<int>(1000/fps));
@@ -97,6 +99,7 @@ void init(){
   IMG_Init(IMG_INIT_PNG);
   TTF_Init();
 
+
   window = SDL_CreateWindow("Game Of Life", 100, 100, width, height, SDL_WINDOW_SHOWN);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -122,13 +125,13 @@ void end(){
 
 int get_cell_row_count(){
 
-  return static_cast<int>(width/cellsize);
+  return static_cast<int>(::width/cellsize);
 
 }
 
 int get_cell_column_count(){
 
-  return static_cast<int>(height/cellsize);
+  return static_cast<int>(::height/cellsize);
 }
 
 void call_global_transform(){
